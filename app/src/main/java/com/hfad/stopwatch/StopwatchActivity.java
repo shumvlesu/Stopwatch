@@ -17,6 +17,13 @@ public class StopwatchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
+
+        //Если метод onCreate создается не в первый раз. То заполнем уже подсчитаные секунды.
+        if (savedInstanceState !=null) {
+            running = savedInstanceState.getBoolean("running");
+            seconds = savedInstanceState.getInt("seconds");
+        }
+
         runTimer();
     }
 
@@ -54,6 +61,15 @@ public class StopwatchActivity extends Activity {
             }
         });
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        //Экран повернули сработал метод onSaveInstanceState()
+        //Сохраним состояние seconds и running перед onDestroy()
+        savedInstanceState.putInt("seconds", seconds);
+        savedInstanceState.putBoolean("running", running);
+    }
+
 }
 
 
