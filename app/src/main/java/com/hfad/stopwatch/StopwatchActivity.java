@@ -12,6 +12,7 @@ public class StopwatchActivity extends Activity {
 
     private int seconds = 0;
     private boolean running;
+    private boolean wasRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +20,10 @@ public class StopwatchActivity extends Activity {
         setContentView(R.layout.activity_stopwatch);
 
         //Если метод onCreate создается не в первый раз. То заполнем уже подсчитаные секунды.
-        if (savedInstanceState !=null) {
+        if (savedInstanceState != null) {
             running = savedInstanceState.getBoolean("running");
             seconds = savedInstanceState.getInt("seconds");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
 
         runTimer();
@@ -30,7 +32,6 @@ public class StopwatchActivity extends Activity {
     public void onClickStart(View view) {
         running = true;
     }
-
 
     public void onClickStop(View view) {
         running = false;
@@ -41,9 +42,8 @@ public class StopwatchActivity extends Activity {
         seconds = 0;
     }
 
-
     private void runTimer() {
-        final TextView timeView = (TextView) findViewById(R.id.time_view);
+        final TextView timeView = findViewById(R.id.time_view);
         final Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
@@ -70,6 +70,21 @@ public class StopwatchActivity extends Activity {
         savedInstanceState.putBoolean("running", running);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        wasRunning = running;
+        running = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (wasRunning) {
+            running = true;
+        }
+
+    }
 }
 
 
