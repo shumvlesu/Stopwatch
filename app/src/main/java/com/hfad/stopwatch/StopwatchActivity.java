@@ -68,6 +68,7 @@ public class StopwatchActivity extends Activity {
         //Сохраним состояние seconds и running перед onDestroy()
         savedInstanceState.putInt("seconds", seconds);
         savedInstanceState.putBoolean("running", running);
+        savedInstanceState.putBoolean("wasRunning", wasRunning);
     }
 
     @Override
